@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  test:
+    build: .
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@test-db:5432/pdf_search_test
+    depends_on:
+      - test-db
+    command: pytest -v
+
+  test-db:
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=pdf_search_test
+    tmpfs:
+      - /var/lib/postgresql/data
