@@ -1,4 +1,6 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException, StaticFiles
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from sqlmodel import Field, Session, SQLModel, create_engine, select
 from typing import Optional, List
 import os
@@ -28,6 +30,10 @@ class PDFPage(SQLModel, table=True):
     
 # Create FastAPI app
 app = FastAPI(title="PDF Search Service")
+
+@app.get("/")
+async def read_root():
+    return FileResponse("app/static/index.html")
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
